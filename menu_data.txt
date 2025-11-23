@@ -8,3 +8,5 @@ Minuman;Susu;5000.0;Normal
 Minuman;Kopi;3000.0;Hangat
 Minuman;Air;1000.0;Normal
 Diskon;Promo Merdeka;5000.0;Promo
+Diskon;Promo Natal;10000.0;Promo
+Minuman;Syrup;1500.0;Dingin

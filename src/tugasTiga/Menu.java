@@ -4,7 +4,10 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Menu {
+	// Menyimpan seluruh objek menu (Makanan, Minuman dan Diskon)
     private ArrayList<MenuItem> daftarMenu;
+    
+    // Nama file yang digunakan dalam menyimpan data menu
     private final String FILENAME = "menu_data.txt";
 
     public Menu() {
@@ -20,7 +23,8 @@ public class Menu {
     public ArrayList<MenuItem> getDaftarMenu() {
         return daftarMenu;
     }
-
+    
+    // Untuk mencari menu secara parsial
     public MenuItem cariMenu(String inputNama) {
         String cari = inputNama.toLowerCase().trim();
         for (MenuItem item : daftarMenu) {
@@ -34,18 +38,18 @@ public class Menu {
     }
 
     public void tampilkanSemuaMenu() {
+    	// Mengecek jika tidak terdapat menu yang tersimpan dalam folder project
         if (daftarMenu.isEmpty()) {
             System.out.println("Belum ada data menu.");
             return;
         }
         System.out.println("\n--- DAFTAR MENU ---");
-        for (int i = 0; i < daftarMenu.size(); i++) {
-            System.out.print((i + 1) + ". ");
-            daftarMenu.get(i).tampilMenu(); // Polymorphic call
+        for (MenuItem item : daftarMenu) { 
+            item.tampilMenu(); 
         }
     }
 
-    // --- File I/O: Simpan ---
+    // --- File I/O: Menyimpan ---
     private void simpanMenuKeFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILENAME))) {
             for (MenuItem item : daftarMenu) {
@@ -57,7 +61,7 @@ public class Menu {
         }
     }
 
-    // --- File I/O: Muat ---
+    // --- File I/O: Memuat ---
     private void memuatMenuDariFile() {
         File file = new File(FILENAME);
         if (!file.exists()) return;
@@ -71,6 +75,7 @@ public class Menu {
                 String tipe = parts[0];
                 String nama = parts[1];
                 double harga = Double.parseDouble(parts[2]);
+                double besarDiskon = Double.parseDouble(parts[2]);
                 String infoTambahan = (parts.length > 3) ? parts[3] : "-";
 
                 MenuItem item = null;
@@ -79,7 +84,7 @@ public class Menu {
                 } else if (tipe.equalsIgnoreCase("Minuman")) {
                     item = new Minuman(nama, harga, infoTambahan);
                 } else if (tipe.equalsIgnoreCase("Diskon")) {
-                    item = new Diskon(nama, harga); 
+                    item = new Diskon(nama, besarDiskon); 
                 }
 
                 if (item != null) daftarMenu.add(item);

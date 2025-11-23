@@ -24,7 +24,7 @@ public class WarungJava {
         boolean berjalan = true;
         while (berjalan) {
             try {
-                System.out.println("\n=== SISTEM MANAJEMEN WARUNG JAVA ===");
+                System.out.println("\n=== MENU UTAMA WARUNG JAVA ===");
                 System.out.println("1. Tambah Menu Baru (Admin)");
                 System.out.println("2. Lihat Daftar Menu");
                 System.out.println("3. Buat Pesanan Pelanggan");
@@ -76,7 +76,7 @@ public class WarungJava {
             } else if (jenis.equals("2")) {
                 System.out.print("Masukkan Harga: ");
                 double harga = Double.parseDouble(scanner.nextLine());
-                System.out.print("Jenis Minuman (Panas/Dingin): ");
+                System.out.print("Jenis Minuman (Hangat/Dingin): ");
                 String info = scanner.nextLine();
                 menuRestoran.tambahItem(new Minuman(nama, harga, info));
 
@@ -94,15 +94,12 @@ public class WarungJava {
         }
     }
 
-    /**
-     * REVISI: Proses pesanan dengan format 'nama_menu=jumlah' 
-     * dan menggunakan pencarian parsial.
-     */
     private static void prosesPesanan() {
         Pesanan pesananSaatIni = new Pesanan();
         System.out.println("\n--- Pesanan Baru ---");
         menuRestoran.tampilkanSemuaMenu();
-        System.out.println("\nFORMAT: <bagian_nama>=<jumlah> (Cth: Teh=2 atau Goreng=1)");
+        System.out.println("\nFORMAT: <nama_menu>=<jumlah> (Cth: Teh=2 atau Goreng=1)");
+        System.out.println("\nFORMAT: Jangan lupa input promo khusus jika ada");
         System.out.println("Ketik 'selesai' untuk cetak struk.");
 
         while (true) {
@@ -114,7 +111,7 @@ public class WarungJava {
             }
 
             if (!input.contains("=")) {
-                System.err.println("❌ Format harus '<bagian_nama>=<jumlah>'.");
+                System.err.println("❌ Format harus '<nama_menu>=<jumlah>'.");
                 continue;
             }
 
@@ -133,7 +130,7 @@ public class WarungJava {
                      continue;
                 }
 
-                // Menggunakan cariMenu() yang sudah direvisi untuk pencarian parsial
+                // Menggunakan cariMenu()
                 MenuItem item = menuRestoran.cariMenu(namaInput);
                 
                 if (item != null) {
@@ -148,7 +145,19 @@ public class WarungJava {
             }
         }
 
-        System.out.println("\nMenghitung total...");
-        pesananSaatIni.cetakStruk();
+        // Membuka dialog simpan
+        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        fileChooser.setDialogTitle("Simpan Struk");
+        fileChooser.setSelectedFile(new java.io.File("struk_pelanggan.txt"));
+
+        if (fileChooser.showSaveDialog(null) == javax.swing.JFileChooser.APPROVE_OPTION) {
+            String path = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!path.toLowerCase().endsWith(".txt")) {
+                path += ".txt";
+            }
+            pesananSaatIni.cetakStruk(path);
+        } else {
+            System.out.println("[Info] Penyimpanan dibatalkan.");
+        }
     }
 }

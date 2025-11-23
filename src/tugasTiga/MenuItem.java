@@ -1,16 +1,17 @@
 package tugasTiga;
 
 /**
- * MenuItem.java
- * Berisi hirarki kelas item menu (Parent dan Child classes).
+ * Bertindak sebagai kerangka dasar (abstract)
+ * untuk semua item yang dijual (makanan, minuman, diskon).
  */
 
 public abstract class MenuItem {
-    // Encapsulation: Field private
+    // Enkapsulasi, hanya dapat diakses dari dalam kelas itu sendiri.
     private String nama;
     private double harga;
     private String kategori;
 
+    // Inisialisasi, memberi nilai awal
     public MenuItem(String nama, double harga, String kategori) {
         this.nama = nama;
         this.harga = harga;
@@ -18,11 +19,12 @@ public abstract class MenuItem {
     }
 
     // Getter
+    // Digunakan untuk mengambil atau membaca nilai dari variabel private
     public String getNama() { return nama; }
     public double getHarga() { return harga; }
     public String getKategori() { return kategori; }
     
-    // Abstract method
+    // Method Abstrak
     public abstract void tampilMenu();
     public abstract String toFileString();
 }
@@ -30,19 +32,23 @@ public abstract class MenuItem {
 // --- Subkelas Makanan ---
 class Makanan extends MenuItem {
     private String jenisMakanan;
-
+    
+    //Membuat objek baru sambil mewarisi dan
+    //menginisialisasi properti dari kelas induk
     public Makanan(String nama, double harga, String jenisMakanan) {
         super(nama, harga, "Makanan");
         this.jenisMakanan = jenisMakanan;
     }
 
-    @Override
+    @Override //memberikan implementasi spesifik untuk item menu
+    // Untuk menampilkan informasi item secara spesifik.
     public void tampilMenu() {
-        System.out.printf("🍛 [Makanan] %-20s | Jenis: %-10s | Rp. %,.0f\n", 
+        System.out.printf("[Makanan] %-20s | Jenis: %-10s | Rp. %,.0f\n", 
             getNama(), jenisMakanan, getHarga());
     }
 
     @Override
+    // Konversi objek menjadi format string untuk disimpan ke file teks.
     public String toFileString() {
         return "Makanan;" + getNama() + ";" + getHarga() + ";" + jenisMakanan;
     }
@@ -59,7 +65,7 @@ class Minuman extends MenuItem {
 
     @Override
     public void tampilMenu() {
-        System.out.printf("🥤 [Minuman] %-20s | Jenis: %-10s | Rp. %,.0f\n", 
+        System.out.printf("[Minuman] %-20s | Jenis: %-10s | Rp. %,.0f\n", 
             getNama(), jenisMinuman, getHarga());
     }
 
@@ -84,7 +90,7 @@ class Diskon extends MenuItem {
 
     @Override
     public void tampilMenu() {
-        System.out.printf("🎟️ [Promo]   %-20s | Potongan: Rp. %,.0f\n", 
+        System.out.printf("[Promo] %-22s | Potongan: Rp. %,.0f\n", 
             getNama(), besarDiskon);
     }
 
